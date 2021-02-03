@@ -2,6 +2,7 @@ import os
 import bs4
 import glob
 import time
+import json
 import requests
 
 from get_route_index import OUT_DIR as INDEX_DIR
@@ -21,7 +22,7 @@ def get_route_url_list():
         return json.load(route_url_io).values()
 
 def get_route(url):
-    local_route = os.path.join(ROUTE_DIR, os.path.basename(url))
+    local_route = os.path.join(ROUTE_DIR, os.path.basename(url) + '.html')
     if os.path.exists(local_route):
         return
     print('Downloading route {0}'.format(url))
