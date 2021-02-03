@@ -6,7 +6,7 @@ import requests
 
 from urllib.parse import urlparse, parse_qs
 
-OUT_DIR = "./index/"
+OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "./raw/index/")
 if not os.path.exists(OUT_DIR):
     os.makedirs(OUT_DIR)
 

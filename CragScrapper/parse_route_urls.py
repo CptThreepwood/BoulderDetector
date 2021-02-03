@@ -3,6 +3,8 @@ import bs4
 import json
 import glob
 
+import OUT_DIR from get_route_index
+
 def scrape_routes():
     routes = {}
     route_cache_file = os.path.join(OUT_DIR, 'all_routes.json')
