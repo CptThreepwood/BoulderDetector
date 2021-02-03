@@ -5,7 +5,7 @@ import glob
 
 import OUT_DIR from get_route_index
 
-def scrape_routes():
+def parse_routes():
     routes = {}
     route_cache_file = os.path.join(OUT_DIR, 'all_routes.json')
     if os.path.exists(route_cache_file):
@@ -27,4 +27,4 @@ def scrape_routes():
     return routes
 
 if __name__ == "__main__":
-    scrape_routes()
+    parse_routes()
