@@ -4,7 +4,8 @@ import glob
 import time
 import requests
 
-import OUT_DIR from get_route_index as INDEX_DIR
+from get_route_index import OUT_DIR as INDEX_DIR
+
 ROUTE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), './raw/routes/')
 if not os.path.exists(ROUTE_DIR):
     os.makedirs(ROUTE_DIR)

@@ -3,7 +3,7 @@ import bs4
 import json
 import glob
 
-import OUT_DIR from get_route_index
+from get_route_index import OUT_DIR
 
 def parse_routes():
     routes = {}
