@@ -1,0 +1,13 @@
+## Compiled Python
+*.pyc
+__pycache__
+
+## Python Virtual Env
+env
+
+## Jupyter notebooks
+.ipynb_checkpoints
+Untitled.ipynb
+
+## IDE Config
+.vscode
