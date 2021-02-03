@@ -1,5 +1,6 @@
 import os
 import bs4
+import json
 import glob
 import time
 import requests
@@ -35,7 +36,7 @@ def save_index_page(page_no):
 
     with open(os.path.join(OUT_DIR, "{0}.html".format(page_no)), 'wb') as index_file:
         index_file.write(index_content)
-    
+
     indices = parse_next_page(index_content)
     next_index = min(i for i in indices if i > page_no) if indices else None
     if next_index:
@@ -43,17 +44,25 @@ def save_index_page(page_no):
         save_index_page(next_index)
 
 def get_id(url):
-    return int(url.split('/')[-1])
+    url_parts = url.split('/')
+    id_index = [i for i, e in enumerate(url_parts) if e == 'route'][0] + 1
+    try:
+        return int(url_parts[id_index])
+    except Exception as err:
+        print(err)
+        print(url)
+        return -1
 
 def scrape_routes():
     routes = {}
-    route_cache_file = os.path.join(OUT_DIR, 'all_routes.sjon')
+    route_cache_file = os.path.join(OUT_DIR, 'all_routes.json')
     if os.path.exists(route_cache_file):
         with open(route_cache_file, 'r') as route_cache_io:
             routes = json.load(route_cache_io)
     for index in glob.glob(os.path.join(OUT_DIR, '*')):
         with open(index, 'r') as index_io:
-            soup = bs4.BeautifulSoup(index_io)
+            print(index)
+            soup = bs4.BeautifulSoup(index_io, 'html.parser')
             routes.update({
                 get_id(link['href']): link['href']
                 for link in soup.find_all('a')
