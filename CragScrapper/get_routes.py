@@ -13,9 +13,14 @@ if not os.path.exists(ROUTE_DIR):
 
 ROUTE_BASE = "https://www.thecrag.com/"
 
-def get_route_page(rel_url):
+def get_route_page(rel_url, wait=1):
     url = ROUTE_BASE + str(rel_url)
-    return requests.get(url).content
+    try:
+        return requests.get(url, timeout=10).content
+    except (requests.exceptions.Timeout, requests.exceptions.ConnectionError):
+        print('timed out, retrying')
+        time.sleep(wait)
+        return get_route_page(rel_url, wait*2)
 
 def get_route_url_list():
     with open(os.path.join(INDEX_DIR, 'all_routes.json')) as route_url_io:
@@ -24,14 +29,15 @@ def get_route_url_list():
 def get_route(url):
     local_route = os.path.join(ROUTE_DIR, os.path.basename(url) + '.html')
     if os.path.exists(local_route):
-        return
+        return False
     print('Downloading route {0}'.format(url))
     route_content = get_route_page(url)
 
     with open(local_route, 'wb') as route_io:
         route_io.write(route_content)
+    return True
 
 if __name__ == '__main__':
     for url in get_route_url_list():
-        get_route(url)
-        time.sleep(1)
+        if get_route(url):
+            time.sleep(0.2)
